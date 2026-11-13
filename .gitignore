@@ -1,0 +1,60 @@
+# Vivado generated directories
+.Xil/
+.cache/
+LeNet5.cache/
+LeNet5.hw/
+LeNet5.ip_user_files/
+LeNet5.runs/
+LeNet5.sim/
+xsim.dir/
+
+# Vivado/XSIM logs and temporary files
+*.jou
+*.log
+*.pb
+*.wdb
+*.str
+*.os
+webtalk*.xml
+webtalk*.backup.*
+
+# Generated memory initialization copies and local reports at project root
+/*.mif
+/PL_utilization_hierarchical.*
+/codex_image_reader_*
+
+# Generated IP output products; keep the IP configuration files
+LeNet5.srcs/sources_1/ip/**/*
+!LeNet5.srcs/sources_1/ip/*/
+!LeNet5.srcs/sources_1/ip/*/*.xci
+
+# Unused legacy IP configurations (not referenced by LeNet5.xpr)
+LeNet5.srcs/sources_1/ip/axi_bram_ctrl_image/
+LeNet5.srcs/sources_1/ip/blkmem_f6_weight0/
+
+# Generated Block Design output products; keep .bd, UI layout, and wrapper
+LeNet5.srcs/sources_1/bd/*/hw_handoff/
+LeNet5.srcs/sources_1/bd/*/ip/
+LeNet5.srcs/sources_1/bd/*/ipshared/
+LeNet5.srcs/sources_1/bd/*/sim/
+LeNet5.srcs/sources_1/bd/*/synth/
+LeNet5.srcs/sources_1/bd/*/*.bmm
+LeNet5.srcs/sources_1/bd/*/*.bxml
+LeNet5.srcs/sources_1/bd/*/*_ooc.xdc
+
+# SDK workspace metadata and generated build outputs
+LeNet5.sdk/*
+!LeNet5.sdk/PS/
+LeNet5.sdk/PS/Debug/
+
+# Local planning/tool artifacts
+.superpowers/
+docs/superpowers/
+LeNet5.srcs/sources_1/new/.superpowers/
+LeNet5.srcs/sources_1/new/docs/superpowers/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*~
