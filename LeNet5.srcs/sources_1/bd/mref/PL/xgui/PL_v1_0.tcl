@@ -10,9 +10,8 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "CHANNEL_O_4" -parent ${Page_0}
   ipgui::add_param $IPINST -name "CHANNEL_O_5" -parent ${Page_0}
   ipgui::add_param $IPINST -name "CONV_CORE" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "DATA_WIDTH" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "DDR_BASE_ADDR" -parent ${Page_0}
   ipgui::add_param $IPINST -name "LINE_LEN" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "LINE_NUMS" -parent ${Page_0}
   ipgui::add_param $IPINST -name "PADDING" -parent ${Page_0}
   ipgui::add_param $IPINST -name "QUANT_SIZE" -parent ${Page_0}
   ipgui::add_param $IPINST -name "WEIGHT_SIZE" -parent ${Page_0}
@@ -83,12 +82,12 @@ proc validate_PARAM_VALUE.CONV_CORE { PARAM_VALUE.CONV_CORE } {
 	return true
 }
 
-proc update_PARAM_VALUE.DATA_WIDTH { PARAM_VALUE.DATA_WIDTH } {
-	# Procedure called to update DATA_WIDTH when any of the dependent parameters in the arguments change
+proc update_PARAM_VALUE.DDR_BASE_ADDR { PARAM_VALUE.DDR_BASE_ADDR } {
+	# Procedure called to update DDR_BASE_ADDR when any of the dependent parameters in the arguments change
 }
 
-proc validate_PARAM_VALUE.DATA_WIDTH { PARAM_VALUE.DATA_WIDTH } {
-	# Procedure called to validate DATA_WIDTH
+proc validate_PARAM_VALUE.DDR_BASE_ADDR { PARAM_VALUE.DDR_BASE_ADDR } {
+	# Procedure called to validate DDR_BASE_ADDR
 	return true
 }
 
@@ -98,15 +97,6 @@ proc update_PARAM_VALUE.LINE_LEN { PARAM_VALUE.LINE_LEN } {
 
 proc validate_PARAM_VALUE.LINE_LEN { PARAM_VALUE.LINE_LEN } {
 	# Procedure called to validate LINE_LEN
-	return true
-}
-
-proc update_PARAM_VALUE.LINE_NUMS { PARAM_VALUE.LINE_NUMS } {
-	# Procedure called to update LINE_NUMS when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.LINE_NUMS { PARAM_VALUE.LINE_NUMS } {
-	# Procedure called to validate LINE_NUMS
 	return true
 }
 
@@ -138,9 +128,9 @@ proc validate_PARAM_VALUE.WEIGHT_SIZE { PARAM_VALUE.WEIGHT_SIZE } {
 }
 
 
-proc update_MODELPARAM_VALUE.DATA_WIDTH { MODELPARAM_VALUE.DATA_WIDTH PARAM_VALUE.DATA_WIDTH } {
+proc update_MODELPARAM_VALUE.DDR_BASE_ADDR { MODELPARAM_VALUE.DDR_BASE_ADDR PARAM_VALUE.DDR_BASE_ADDR } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.DATA_WIDTH}] ${MODELPARAM_VALUE.DATA_WIDTH}
+	set_property value [get_property value ${PARAM_VALUE.DDR_BASE_ADDR}] ${MODELPARAM_VALUE.DDR_BASE_ADDR}
 }
 
 proc update_MODELPARAM_VALUE.QUANT_SIZE { MODELPARAM_VALUE.QUANT_SIZE PARAM_VALUE.QUANT_SIZE } {
@@ -156,11 +146,6 @@ proc update_MODELPARAM_VALUE.WEIGHT_SIZE { MODELPARAM_VALUE.WEIGHT_SIZE PARAM_VA
 proc update_MODELPARAM_VALUE.LINE_LEN { MODELPARAM_VALUE.LINE_LEN PARAM_VALUE.LINE_LEN } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.LINE_LEN}] ${MODELPARAM_VALUE.LINE_LEN}
-}
-
-proc update_MODELPARAM_VALUE.LINE_NUMS { MODELPARAM_VALUE.LINE_NUMS PARAM_VALUE.LINE_NUMS } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.LINE_NUMS}] ${MODELPARAM_VALUE.LINE_NUMS}
 }
 
 proc update_MODELPARAM_VALUE.PADDING { MODELPARAM_VALUE.PADDING PARAM_VALUE.PADDING } {

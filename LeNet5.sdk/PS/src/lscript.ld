@@ -23,8 +23,11 @@ _UNDEF_STACK_SIZE = DEFINED(_UNDEF_STACK_SIZE) ? _UNDEF_STACK_SIZE : 1024;
 
 MEMORY
 {
-   axi_bram_ctrl_image_Mem0 : ORIGIN = 0x40000000, LENGTH = 0x1000
-   ps7_ddr_0 : ORIGIN = 0x100000, LENGTH = 0x3FF00000
+   /* Keep application sections, heap and stacks below the PL image buffer. */
+   ps7_ddr_0 : ORIGIN = 0x100000, LENGTH = 0x0FF00000
+   /* Reserved for the parameter header and RGB888 image at the fixed PL base. */
+   ps7_ddr_image : ORIGIN = 0x10000000, LENGTH = 0x00800000
+   ps7_ddr_1 : ORIGIN = 0x10800000, LENGTH = 0x2F800000
    ps7_ram_0 : ORIGIN = 0x0, LENGTH = 0x30000
    ps7_ram_1 : ORIGIN = 0xFFFF0000, LENGTH = 0xFE00
 }
