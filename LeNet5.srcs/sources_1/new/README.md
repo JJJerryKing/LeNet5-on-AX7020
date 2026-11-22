@@ -6,14 +6,14 @@
 ├── archive/                   # 时序分析、资源利用率报告基线
 ├── coe/                       # 存放RAM/ROM IP核的初始化数据文件
 ├── docs/
-├── PC/                        # PC端运行的用于发送图片的测试代码
+├── PC/                        # RGB图片串口发送脚本及test_dataset测试图片
 ├── Timing_Summary/            # 存放时序分析报告
 ├── Utilization_Report/        # 存放资源利用率报告
 ├── argmax.v
 ├── average_pooling.v
 ├── AverPooling.v
 ├── fullconnect.v
-├── image_reader.v
+├── image_reader.v             # 旧BRAM读取模块，当前PL不再使用
 ├── LeNet_top.v
 ├── Lenet.v                    # 实例化各个叶结点模块，组成的testbench测试代码，测试LeNet5神经网络
 ├── Line_Cache2.v
@@ -21,9 +21,10 @@
 ├── Line_Out_Cache.v
 ├── mac.v
 ├── PL.v
+├── preprocessing.v            # DDR读取、HLS预处理及行握手封装
 ├── README.md
 ├── relu_plus.v
-└── tb_PL.v                    # 实例化PL.v的testbench的测试代码，测试LeNet5神经网络顶层模块和image_reader.v
+└── tb_PL.v                    # 旧BRAM接口testbench，尚未适配当前预处理系统
 ```
 
 # 神经网络实现思路
@@ -31,8 +32,8 @@
 ## 整体数据流
 
 ```text
-图片BRAM
-→ 按行读取
+DDR中的RGB888图片及宽高
+→ AXI Master读取 → 灰度化 → 缩放到28×28 → 按行输出
 → 补零
 → 卷积1 → ReLU → 池化1
 → 卷积2 → ReLU → 池化2
@@ -45,25 +46,27 @@
 
 ## 1. `PL`
 
-集成 `image_reader` 和 `LeNet_top`：
+集成 `preprocessing` 和 `LeNet_top`：
 
 - 接收PS给出的启动、输出接收等控制信号。
-- 从图片BRAM读取输入。
+- 通过AXI Master从固定DDR读取参数和RGB图片，预处理后逐行送入网络。
 - 将最终分类编号和完成信号提供给PS。
 
-## 2. `image_reader`
+PS启动时及每帧结果确认后，通过控制GPIO通道1的bit1对计算模块进行低有效复位。该通道待机写 `0x02`、启动写 `0x03`、复位写 `0x00`；复位保持10μs后释放并等待就绪，随后回传类别。复位覆盖预处理及LeNet，控制GPIO和AXI互连继续使用系统复位。
 
-按行读取图片：
+## 2. `preprocessing`
 
-- 收到启动信号后，从BRAM连续读取28个像素。
-- 将28个像素保存在一行缓冲中。
-- 一行读取完成后，通过 valid/ready 将整行发送给 `LeNet_top`。
-- 当前行被接收后，再读取下一行。
-- 完成28行后回到等待状态。
+替代原 `image_reader` 的图像输入功能：
+
+- 接受整帧启动请求后，实例化的HLS `resize_and_gray` IP通过AXI Master读取DDR。
+- 固定基址为 `0x10000000`；前16字节为参数头：宽度和高度均为32位无符号数，分别位于偏移0、4，偏移8、12保留并写0；RGB数据从偏移16开始，按R、G、B逐字节紧密存放。
+- 使用HLS视频库先灰度化，再通过 `hls::Resize` 缩放到 `28×28`。
+- 每次通过AXIS交付一行28个像素，各像素占13位；AXIS为368位，低364位连接 `LeNet_top`。
+- 封装同时等待HLS完成和28次行握手全部完成，再恢复整帧输入ready。
 
 ## 3. 输入补零
 
-`LeNet_top` 将原始 `28×28` 图片转换成 `32×32`：
+`LeNet_top` 将预处理后的 `28×28` 灰度图片补零成 `32×32`：
 
 - 开始发送两行全零。
 - 每个原始图像行左右各补两个零。
@@ -175,3 +178,7 @@
 ## 12. valid/ready握手
 
 模块之间统一使用 valid/ready 握手，只有 `valid && ready` 同时成立时，数据才正式传递。
+
+- PL对外的 `I_data_valid/I_data_ready` 表示整帧启动握手。
+- `preprocessing` 与 `LeNet_top` 之间的握手每次传递一行，一帧共28行。
+- PL对外的 `O_data_valid/O_data_ready` 表示最终分类结果的确认，与内部行握手分开。

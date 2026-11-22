@@ -31,6 +31,24 @@ LeNet5.srcs/sources_1/ip/**/*
 # Unused legacy IP configurations (not referenced by LeNet5.xpr)
 LeNet5.srcs/sources_1/ip/axi_bram_ctrl_image/
 LeNet5.srcs/sources_1/ip/blkmem_f6_weight0/
+LeNet5.srcs/sources_1/ip/u_resize_and_gray/
+
+# HLS: retain source, build scripts, and the complete exported IP repository
+/hls/*
+!/hls/resize_and_gray/
+/hls/resize_and_gray/*
+!/hls/resize_and_gray/resize_and_gray.cpp
+!/hls/resize_and_gray/solution1/
+/hls/resize_and_gray/solution1/*
+!/hls/resize_and_gray/solution1/script.tcl
+!/hls/resize_and_gray/solution1/directives.tcl
+!/hls/resize_and_gray/solution1/impl/
+/hls/resize_and_gray/solution1/impl/*
+!/hls/resize_and_gray/solution1/impl/ip/
+/hls/resize_and_gray/solution1/impl/ip/*
+!/hls/resize_and_gray/solution1/impl/ip/example/
+/hls/resize_and_gray/solution1/impl/ip/example/*
+!/hls/resize_and_gray/solution1/impl/ip/example/xilinx_com_hls_resize_and_gray_1_0/
 
 # Generated Block Design output products; keep .bd, UI layout, and wrapper
 LeNet5.srcs/sources_1/bd/*/hw_handoff/
@@ -46,6 +64,10 @@ LeNet5.srcs/sources_1/bd/*/*_ooc.xdc
 LeNet5.sdk/*
 !LeNet5.sdk/PS/
 LeNet5.sdk/PS/Debug/
+LeNet5.sdk/PS/Release/
+Packages/
+__pycache__/
+*.pyc
 
 # Local planning/tool artifacts
 .superpowers/
