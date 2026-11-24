@@ -63,6 +63,15 @@ LeNet5.srcs/sources_1/bd/*/*_ooc.xdc
 # SDK workspace metadata and generated build outputs
 LeNet5.sdk/*
 !LeNet5.sdk/PS/
+!LeNet5.sdk/PS_Ethernet/
+LeNet5.sdk/PS_Ethernet/Debug/
+LeNet5.sdk/PS_Ethernet/Release/
+!LeNet5.sdk/PS_Ethernet_bsp/
+LeNet5.sdk/PS_Ethernet_bsp/*
+!LeNet5.sdk/PS_Ethernet_bsp/system.mss
+!LeNet5.sdk/PS_Ethernet_bsp/.project
+!LeNet5.sdk/PS_Ethernet_bsp/.cproject
+!LeNet5.sdk/PS_Ethernet_bsp/.sdkproject
 LeNet5.sdk/PS/Debug/
 LeNet5.sdk/PS/Release/
 Packages/

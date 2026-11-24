@@ -6,7 +6,7 @@
 ├── archive/                   # 时序分析、资源利用率报告基线
 ├── coe/                       # 存放RAM/ROM IP核的初始化数据文件
 ├── docs/
-├── PC/                        # RGB图片串口发送脚本及test_dataset测试图片
+├── PC/                        # ethernet.py TCP客户端、旧uart.py及test_dataset图片
 ├── Timing_Summary/            # 存放时序分析报告
 ├── Utilization_Report/        # 存放资源利用率报告
 ├── argmax.v
@@ -29,20 +29,6 @@
 
 # 神经网络实现思路
 
-## 整体数据流
-
-```text
-DDR中的RGB888图片及宽高
-→ AXI Master读取 → 灰度化 → 缩放到28×28 → 按行输出
-→ 补零
-→ 卷积1 → ReLU → 池化1
-→ 卷积2 → ReLU → 池化2
-→ 卷积3
-→ 全连接1
-→ 全连接2
-→ Argmax
-→ 类别编号
-```
 
 ## 1. `PL`
 
@@ -52,7 +38,6 @@ DDR中的RGB888图片及宽高
 - 通过AXI Master从固定DDR读取参数和RGB图片，预处理后逐行送入网络。
 - 将最终分类编号和完成信号提供给PS。
 
-PS启动时及每帧结果确认后，通过控制GPIO通道1的bit1对计算模块进行低有效复位。该通道待机写 `0x02`、启动写 `0x03`、复位写 `0x00`；复位保持10μs后释放并等待就绪，随后回传类别。复位覆盖预处理及LeNet，控制GPIO和AXI互连继续使用系统复位。
 
 ## 2. `preprocessing`
 
