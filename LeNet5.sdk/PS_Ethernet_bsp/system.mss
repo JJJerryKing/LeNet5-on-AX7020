@@ -233,8 +233,7 @@ BEGIN LIBRARY
  PARAMETER LIBRARY_NAME = lwip141
  PARAMETER LIBRARY_VER = 2.0
  PARAMETER PROC_INSTANCE = ps7_cortexa9_0
- PARAMETER lwip_dhcp = false
- PARAMETER dhcp_does_arp_check = false
+ PARAMETER tcp_wnd = 65535
 END
 
 
