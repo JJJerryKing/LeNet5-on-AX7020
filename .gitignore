@@ -50,6 +50,33 @@ LeNet5.srcs/sources_1/ip/u_resize_and_gray/
 /hls/resize_and_gray/solution1/impl/ip/example/*
 !/hls/resize_and_gray/solution1/impl/ip/example/xilinx_com_hls_resize_and_gray_1_0/
 
+# HLS optimization sources and the active exported IP repository
+!/hls/resize_and_gray_v2/
+/hls/resize_and_gray_v2/*
+!/hls/resize_and_gray_v2/resize_and_gray_v2.cpp
+!/hls/resize_and_gray_v2/solution1/
+/hls/resize_and_gray_v2/solution1/*
+!/hls/resize_and_gray_v2/solution1/script.tcl
+!/hls/resize_and_gray_v4/
+/hls/resize_and_gray_v4/*
+!/hls/resize_and_gray_v4/resize_and_gray_v4.cpp
+!/hls/resize_and_gray_v4/solution1/
+/hls/resize_and_gray_v4/solution1/*
+!/hls/resize_and_gray_v4/solution1/script.tcl
+!/hls/resize_and_gray_v4/solution1/impl/
+/hls/resize_and_gray_v4/solution1/impl/*
+!/hls/resize_and_gray_v4/solution1/impl/ip/
+/hls/resize_and_gray_v4/solution1/impl/ip/*
+!/hls/resize_and_gray_v4/solution1/impl/ip/component.xml
+!/hls/resize_and_gray_v4/solution1/impl/ip/auxiliary.xml
+!/hls/resize_and_gray_v4/solution1/impl/ip/resize_and_gray_info.xml
+!/hls/resize_and_gray_v4/solution1/impl/ip/bd/
+!/hls/resize_and_gray_v4/solution1/impl/ip/constraints/
+!/hls/resize_and_gray_v4/solution1/impl/ip/doc/
+!/hls/resize_and_gray_v4/solution1/impl/ip/hdl/
+!/hls/resize_and_gray_v4/solution1/impl/ip/misc/
+!/hls/resize_and_gray_v4/solution1/impl/ip/xgui/
+
 # Generated Block Design output products; keep .bd, UI layout, and wrapper
 LeNet5.srcs/sources_1/bd/*/hw_handoff/
 LeNet5.srcs/sources_1/bd/*/ip/

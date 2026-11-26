@@ -12,6 +12,7 @@
 
 /* PC sends RGB8 + u32 LE width/height + RGB888; waits for one class byte. */
 int frame_ready;
+XTime rx_start, rx_end;
 static struct tcp_pcb *client;
 static u8 header[12];
 static u32 rx_count;
@@ -57,6 +58,9 @@ static err_t recv_callback(void *arg, struct tcp_pcb *pcb,
     if (err != ERR_OK || frame_ready)
         goto abort;
 
+    if (rx_count == 0U)
+        XTime_GetTime(&rx_start);
+
     for (part = p; part != NULL; part = part->next) {
         data = part->payload;
         remaining = part->len;
@@ -99,6 +103,7 @@ static err_t recv_callback(void *arg, struct tcp_pcb *pcb,
                     /* PL HP0 reads DDR without snooping the PS cache. */
                     Xil_DCacheFlushRange(IMAGE_DDR_BASE,
                                         IMAGE_HDR_SIZE + frame_bytes);
+                    XTime_GetTime(&rx_end);
                     frame_ready = 1;
                 }
             }

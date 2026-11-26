@@ -63,10 +63,16 @@ struct netif *echo_netif = &server_netif;
 static XGpio gpio_ctrl;
 static XGpio gpio_status;
 static volatile int result_done;
+static XTime pl_start;
+static volatile XTime pl_end;
 
 static void result_isr(void *arg)
 {
+    XTime now;
+
     (void)arg;
+    XTime_GetTime(&now);
+    pl_end = now;
     result_done = 1;
 }
 
@@ -148,6 +154,7 @@ int main(void)
         case START:
             if ((flags & (INPUT_READY_MASK | RESULT_VALID_MASK)) == INPUT_READY_MASK) {
                 result_done = 0;
+                XTime_GetTime(&pl_start);
                 XGpio_DiscreteWrite(&gpio_ctrl, CTRL_START_CHANNEL,
                                     PL_RESET_N_MASK | 0x01U);
                 state = START_ACK;
@@ -172,6 +179,9 @@ int main(void)
                 /* Drain preprocessing DDR reads before resetting/reusing DDR. */
                 if ((flags & INPUT_READY_MASK) != 0U && ethernet_reply(result)) {
                     reset_pl();
+                    xil_printf("rx=%u us, pl=%u us\r\n",
+                        (u32)((rx_end - rx_start) * 1000000ULL / COUNTS_PER_SECOND),
+                        (u32)((pl_end - pl_start) * 1000000ULL / COUNTS_PER_SECOND));
                     state = FRAME;
                 }
             }
